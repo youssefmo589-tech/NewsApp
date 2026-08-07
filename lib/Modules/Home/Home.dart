@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news/Modules/Home/Widgets/CustomDrawer.dart';
 import 'package:provider/provider.dart';
-
 
 import '../../core/settingProvider/settingProvider.dart';
 import '../../core/themes/AppColors.dart';
@@ -29,6 +28,10 @@ class _HomeState extends State<Home>
             child: Icon(Icons.search , color: provider.isdark() ? AppColors.white : AppColors.black, size: 24,),
           )
         ],
+
+      ),
+      drawer: Drawer(
+        child: CustomeDrawer(),
 
       ),
 

@@ -7,6 +7,7 @@ class AppThemeManager
 {
   static ThemeData lightTheme = ThemeData(
     appBarTheme: AppBarTheme(
+      backgroundColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
     ),
     scaffoldBackgroundColor: AppColors.white,
@@ -34,6 +35,8 @@ class AppThemeManager
 
   static ThemeData darkTheme = ThemeData(
     appBarTheme: AppBarTheme(
+      backgroundColor: Colors.transparent,
+
       systemOverlayStyle: SystemUiOverlayStyle.light,
     ),
       scaffoldBackgroundColor: AppColors.black,
