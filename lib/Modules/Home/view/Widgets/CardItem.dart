@@ -5,6 +5,7 @@ import 'package:news/core/settingProvider/settingProvider.dart';
 import 'package:news/core/themes/AppColors.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CardItem extends StatelessWidget {
   final Article article;
@@ -66,7 +67,8 @@ class CardItem extends StatelessWidget {
                 style: theme.titleSmall?.copyWith(color: AppColors.grey),
               ),
 
-              // Text("My ${article.publishedAt}" , style: theme.titleSmall?.copyWith(color: AppColors.grey),)
+              Text(timeago.format(DateTime.parse(article.publishedAt)),
+                style: theme.titleSmall?.copyWith(color: AppColors.grey),)
             ],
           ),
         ],
