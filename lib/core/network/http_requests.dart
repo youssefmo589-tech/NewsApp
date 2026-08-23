@@ -8,15 +8,15 @@ import 'package:news/core/network/endpoints.dart';
 
 class HttpRequestService {
   static Future<List<Source>> getAllSources(
-    String categoryid,)
-  async {final Map<String, String> QueryParameters = {
+    String categoryid,) async {
+    final Map<String, String> QueryParameters = {
       "apiKey": AppConstants.ApiKey,
       "category": categoryid,
     };
     final response = await http.get(
       Uri.https(
-        AppConstants.baseUrl, // domain
-        EndPoints.AllSources, //endpoint
+        AppConstants.baseUrl,
+        EndPoints.AllSources,
         QueryParameters,
       ),
     );
@@ -26,7 +26,9 @@ class HttpRequestService {
     final data = SourceModel.fromjson(decodedata);
 
     return data.sources;
-  }tatic Future<List<Article>> getAllArticles(
+  }
+
+  static Future<List<Article>> getAllArticles(
     String sourceID,
     int page,
     int pagesize,
@@ -39,8 +41,8 @@ class HttpRequestService {
     };
     final response = await http.get(
       Uri.https(
-        AppConstants.baseUrl, // domain
-        EndPoints.AllArticle, //endpoint
+        AppConstants.baseUrl,
+        EndPoints.AllArticle,
         QueryParameters,
       ),
     );
