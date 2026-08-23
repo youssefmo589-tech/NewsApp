@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:news/Modules/Articleclass.dart';
 import 'package:news/Modules/Home/CategoryModel.dart';
 import 'package:news/Modules/source_model.dart';
 import 'package:news/core/network/http_requests.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeViewModel extends ChangeNotifier {
   List<CategoryModel> categories = [
@@ -45,6 +48,14 @@ class HomeViewModel extends ChangeNotifier {
     ),
   ];
 
+  int currentpage = 1;
+
+  int pagesize = 5;
+
+  bool isLoading = false;
+
+  bool hasMore = true;
+
   List<CategoryModel> getcategories() => categories;
 
   CategoryModel? _selectedcategory;
@@ -63,8 +74,11 @@ class HomeViewModel extends ChangeNotifier {
 
   void changetabindex(int index) {
     _selectedindex = index;
+    currentpage = 1;
+    isLoading = false;
+    hasMore = true;
+
     getallarticle();
-    notifyListeners();
   }
 
   CategoryModel? selectedcategory() => _selectedcategory ?? null;
@@ -79,6 +93,24 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> openurl(Article article) async
+  {
+    if (article.url == null ||
+        article.url.isEmpty) {
+      return;
+    }
+    final Uri uri = Uri.parse(
+      article.url,
+    );
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode
+            .externalApplication,
+      );
+    }
+  }
+
   Future<void> getallsources() async {
     final data = await HttpRequestService.getAllSources(_selectedcategory!.id);
     _sources = data;
@@ -88,8 +120,33 @@ class HomeViewModel extends ChangeNotifier {
   Future<void> getallarticle() async {
     final data = await HttpRequestService.getAllArticles(
       _sources[_selectedindex].id,
+      currentpage,
+      pagesize,
     );
     _articles = data;
+    notifyListeners();
+  }
+
+  Future<void> loadMoreArticle() async
+  {
+    if (isLoading || !hasMore) {
+      return;
+    }
+    isLoading = true;
+    currentpage ++;
+    final data = await HttpRequestService.getAllArticles(
+      _sources[_selectedindex].id,
+      currentpage,
+      pagesize,
+
+    );
+    if (data.isEmpty) {
+      hasMore = false;
+    }
+    else {
+      _articles.addAll(data);
+    }
+    isLoading = false;
     notifyListeners();
   }
 }

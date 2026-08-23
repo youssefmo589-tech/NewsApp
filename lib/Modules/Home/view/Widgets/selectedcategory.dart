@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:news/Modules/Home/view/Widgets/CardItem.dart';
 import 'package:news/Modules/Home/view/Widgets/TabBarItem.dart';
 import 'package:news/Modules/Home/view_model/HomeViewModel.dart';
 import 'package:news/core/settingProvider/settingProvider.dart';
 import 'package:news/core/themes/AppColors.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class selectedCategory extends StatefulWidget {
   const selectedCategory({super.key});
@@ -15,8 +16,20 @@ class selectedCategory extends StatefulWidget {
 }
 
 class _selectedCategoryState extends State<selectedCategory> {
+  final ScrollController scrollcontroller = ScrollController();
   void initState() {
     super.initState();
+    scrollcontroller.addListener(() {
+      final vm = Provider.of<HomeViewModel>(context, listen: false);
+
+      if (scrollcontroller.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (scrollcontroller.position.pixels >=
+            scrollcontroller.position.maxScrollExtent - 300) {
+          vm.loadMoreArticle();
+        }
+      }
+    });
     Future.wait([
       Provider.of<HomeViewModel>(context, listen: false).getallsources(),
     ]).then((value) {
@@ -30,10 +43,18 @@ class _selectedCategoryState extends State<selectedCategory> {
     final provider = Provider.of<SettingProvider>(context);
 
     return SingleChildScrollView(
+      controller: scrollcontroller,
       child: Column(
         children: [
           vm.sources.isEmpty
-              ? Center(child: CircularProgressIndicator())
+              ? Center(child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Skeletonizer(child: Bone(
+              height: 50,
+              width: double.infinity,
+              borderRadius: BorderRadiusGeometry.circular(8),
+            )),
+          ))
               : Column(
                   spacing: 16,
                   children: [
@@ -143,20 +164,7 @@ class _selectedCategoryState extends State<selectedCategory> {
                                           ),
                                           GestureDetector(
                                             onTap: () async {
-                                              if (article.url == null ||
-                                                  article.url.isEmpty) {
-                                                return;
-                                              }
-                                              final Uri uri = Uri.parse(
-                                                article.url,
-                                              );
-                                              if (await canLaunchUrl(uri)) {
-                                                await launchUrl(
-                                                  uri,
-                                                  mode: LaunchMode
-                                                      .externalApplication,
-                                                );
-                                              }
+                                              vm.openurl(article);
                                             },
                                             child: Container(
                                               height: 56,

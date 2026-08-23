@@ -8,12 +8,8 @@ import 'package:news/core/network/endpoints.dart';
 
 class HttpRequestService {
   static Future<List<Source>> getAllSources(
-    String categoryid,
-  ) // traga3 masader elakhbarrr
-  async {
-    // tool to n get data aw to fetch data from network   hnstakhdem package esmaha Http
-
-    final Map<String, String> QueryParameters = {
+    String categoryid,)
+  async {final Map<String, String> QueryParameters = {
       "apiKey": AppConstants.ApiKey,
       "category": categoryid,
     };
@@ -30,12 +26,16 @@ class HttpRequestService {
     final data = SourceModel.fromjson(decodedata);
 
     return data.sources;
-  }
-
-  static Future<List<Article>> getAllArticles(String sourceID) async {
+  }tatic Future<List<Article>> getAllArticles(
+    String sourceID,
+    int page,
+    int pagesize,
+  ) async {
     final Map<String, String> QueryParameters = {
       "apiKey": AppConstants.ApiKey,
       "sources": sourceID,
+      "page": page.toString(),
+      "pagesize": pagesize.toString(),
     };
     final response = await http.get(
       Uri.https(

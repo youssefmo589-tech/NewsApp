@@ -4,6 +4,7 @@ import 'package:news/Modules/Articleclass.dart';
 import 'package:news/core/settingProvider/settingProvider.dart';
 import 'package:news/core/themes/AppColors.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class CardItem extends StatelessWidget {
   final Article article;
@@ -31,10 +32,16 @@ class CardItem extends StatelessWidget {
             height: 220,
             width: double.infinity,
             fit: BoxFit.cover,
-            placeholder: (context, url) => SizedBox(
-              height: 220,
-              width: double.infinity,
-              child: Center(child: CircularProgressIndicator()),
+            placeholder: (context, url) =>
+                Skeletonizer(
+                    child:
+                    Bone(
+                      height: 220,
+                      width: double.infinity,
+                      borderRadius: BorderRadiusGeometry.circular(16),
+                    )
+            
+             
             ),
             errorWidget: (context, url, error) => SizedBox(
               height: 220,
