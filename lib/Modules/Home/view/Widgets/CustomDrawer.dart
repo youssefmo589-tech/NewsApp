@@ -1,6 +1,7 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:news/core/gen/assets.gen.dart';
+import 'package:news/core/l10n/app_localizations.dart';
 import 'package:news/core/settingProvider/settingProvider.dart';
 import 'package:news/core/themes/AppColors.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class CustomeDrawer extends StatefulWidget {
 
 class _CustomeDrawerState extends State<CustomeDrawer> {
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context);
     final theme = Theme.of(context).textTheme;
     final provider = Provider.of<SettingProvider>(context);
     return SafeArea(
@@ -24,7 +26,8 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
             flex: 2,
             child: Container(
               decoration: BoxDecoration(color: AppColors.white),
-              child: Center(child: Text("News App", style: theme.titleLarge)),
+              child: Center(
+                  child: Text(local!.newsApp, style: theme.titleLarge)),
             ),
           ),
           Expanded(
@@ -45,7 +48,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                         children: [
                           Assets.icons.home1.svg(),
                           Text(
-                            "Go To Home",
+                            local.goToHome,
                             style: theme.titleLarge?.copyWith(
                               fontSize: 20,
                               color: AppColors.white,
@@ -62,7 +65,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                       children: [
                         Assets.icons.rollerPaintBrush.svg(),
                         Text(
-                          "Theme",
+                          local.theme,
                           style: theme.titleLarge?.copyWith(
                             fontSize: 20,
                             color: AppColors.white,
@@ -112,7 +115,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                       children: [
                         Assets.icons.globeAlt.svg(),
                         Text(
-                          "Language",
+                          local.language,
                           style: theme.titleLarge?.copyWith(
                             fontSize: 20,
                             color: AppColors.white,
@@ -145,7 +148,14 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                         curve: Curves.easeOutCubic,
                         staggerItems: true,
                       ),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        if (value == "Arabic") {
+                          provider.changeLanguage(Locale("ar"));
+                        }
+                        else {
+                          provider.changeLanguage(Locale("en"));
+                        }
+                      },
                     ),
                   ],
                 ),

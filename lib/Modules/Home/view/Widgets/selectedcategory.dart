@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:news/Modules/Home/view/Widgets/CardItem.dart';
 import 'package:news/Modules/Home/view/Widgets/TabBarItem.dart';
 import 'package:news/Modules/Home/view_model/HomeViewModel.dart';
+import 'package:news/core/l10n/app_localizations.dart';
 import 'package:news/core/settingProvider/settingProvider.dart';
 import 'package:news/core/themes/AppColors.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,7 @@ class _selectedCategoryState extends State<selectedCategory> {
   }
 
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context);
     final theme = Theme.of(context).textTheme;
     final vm = Provider.of<HomeViewModel>(context);
     final provider = Provider.of<SettingProvider>(context);
@@ -178,7 +180,7 @@ class _selectedCategoryState extends State<selectedCategory> {
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  "View Full Articel",
+                                                  local!.viewFullArticle,
                                                   style: theme.titleLarge
                                                       ?.copyWith(
                                                         fontWeight:

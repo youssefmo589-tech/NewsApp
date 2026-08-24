@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news/core/AppRoutes/AppConfig.dart';
+import 'package:news/core/l10n/app_localizations.dart';
 import 'package:news/core/themes/AppThemeManager.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget
   {
     final provider = Provider.of<SettingProvider>(context) ;
     return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: provider.locale,
       debugShowCheckedModeBanner: false,
       initialRoute:AppRouteName.initial ,
       onGenerateRoute: AppConfig.onGenerateRoute,

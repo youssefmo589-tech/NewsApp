@@ -7,6 +7,7 @@ import 'package:news/Modules/Home/view/Widgets/CategoryCardItem.dart';
 import 'package:news/Modules/Home/view/Widgets/CustomDrawer.dart';
 import 'package:news/Modules/Home/view/Widgets/selectedcategory.dart';
 import 'package:news/Modules/Home/view_model/HomeViewModel.dart';
+import 'package:news/core/l10n/app_localizations.dart';
 import 'package:news/core/network/http_requests.dart';
 import 'package:provider/provider.dart';
 
@@ -39,6 +40,7 @@ class _HomeState extends State<Home> {
   bool _issearch = false;
   Widget build(BuildContext context)
   {
+    final local = AppLocalizations.of(context);
     final theme = Theme.of(context).textTheme ;
     final provider = Provider.of<SettingProvider>(context) ;
     final vm = Provider.of<HomeViewModel>(context);
@@ -54,7 +56,7 @@ class _HomeState extends State<Home> {
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: 8, vertical: 8),
-                hintText: "Search",
+                hintText: local!.search,
                 hintStyle: theme.titleMedium?.copyWith(
                     color: provider.isdark() ? AppColors.white : AppColors.grey,
                     fontSize: 20),
@@ -94,7 +96,8 @@ class _HomeState extends State<Home> {
         ),
         backgroundColor: Colors.transparent ,
         title: Text(
-          vm.selectedcategory() == null ? "Home" : vm.selectedcategory()!.name,
+          vm.selectedcategory() == null ? local!.home : vm.selectedcategory()!
+              .name,
           style: theme.titleMedium,),
         centerTitle: true,
 
@@ -131,7 +134,7 @@ class _HomeState extends State<Home> {
             spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Good Morning\nHere is Some News For You",
+              Text("${local!.goodMorning}\n${local.hereisSomeNewsForYou}",
                 style: theme.titleMedium?.copyWith(fontSize: 24, height: 1.4),),
               ListView.separated(
                   padding: EdgeInsets.only(bottom: 16),
@@ -248,7 +251,7 @@ class _HomeState extends State<Home> {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          "View Full Articel",
+                                          local!.viewFullArticle,
                                           style: theme.titleLarge?.copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 16,
